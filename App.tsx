@@ -54,7 +54,7 @@ const ExpensesOverview = () => {
             fontSize: 12,
           },
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name='calendar' color={color} size={size} />
+            <Ionicons name="calendar" color={color} size={size} />
           ),
         }}
       />
