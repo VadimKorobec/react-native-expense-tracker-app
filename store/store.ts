@@ -5,7 +5,7 @@ import { buttonReducer } from "./buttonSlice";
 export const store = configureStore({
   reducer: {
     expenses: expensesReducer,
-    button:buttonReducer,
+    button: buttonReducer,
   },
 });
 

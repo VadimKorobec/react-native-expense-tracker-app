@@ -1,8 +1,8 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Pressable, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import { pressButton } from "../../store/buttonSlice";
 
 interface IconButtonProps {
@@ -12,10 +12,11 @@ interface IconButtonProps {
 }
 
 const IconButton = ({ icon, size, color }: IconButtonProps) => {
+    const isPressed = useSelector((state:RootState) => state.button.isPressed )
   const dispatch = useDispatch<AppDispatch>();
   return (
     <Pressable
-      onPress={() => dispatch(pressButton(true))}
+      onPress={() => dispatch(pressButton(!isPressed))}
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.buttonContainer}>

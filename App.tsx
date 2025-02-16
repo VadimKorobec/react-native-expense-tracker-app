@@ -1,9 +1,9 @@
-import { Provider, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { store } from "./store/store";
+import { RootState} from "./store/store";
 import { StatusBar } from "expo-status-bar";
 import { RootStackParamList, RootTabParamList } from "./types/navigation";
 import { Ionicons } from "@expo/vector-icons";
@@ -68,26 +68,29 @@ const ExpensesOverview = () => {
 };
 
 export default function App() {
+  const isPressed = useSelector((state: RootState) => state.button.isPressed);
+  console.log(isPressed)
+
   return (
     <>
       <StatusBar style="light" />
-      <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="ExpensesOverview"
-              component={ExpensesOverview}
-              options={{
-                headerShown: false,
-              }}
-            />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="ExpensesOverview"
+            component={ExpensesOverview}
+            options={{
+              headerShown: false,
+            }}
+          />
+          {isPressed && (
             <Stack.Screen
               name="ManageExpense"
               component={ManageExpenseScreen}
             />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }
