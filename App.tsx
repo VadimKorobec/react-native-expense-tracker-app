@@ -1,4 +1,4 @@
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +11,8 @@ import { Ionicons } from "@expo/vector-icons";
 import ManageExpenseScreen from "./screens/ManageExpenseScreen";
 import RecentExpensesScreen from "./screens/RecentExpensesScreen";
 import AllExpensesScreen from "./screens/AllExpensesScreen";
+
+import IconButton from "./components/UI/IconButton";
 
 import { GlobalStyles } from "./constanst/styles";
 
@@ -28,6 +30,9 @@ const ExpensesOverview = () => {
           backgroundColor: GlobalStyles.colors.primary500,
         },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
+        headerRight: ({ tintColor }) => (
+          <IconButton icon="add" size={24} color={tintColor} />
+        ),
       }}
     >
       <Tab.Screen

@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { expensesReducer } from "./expensesSlice";
+import { buttonReducer } from "./buttonSlice";
 
 export const store = configureStore({
   reducer: {
     expenses: expensesReducer,
+    button:buttonReducer,
   },
 });
 
