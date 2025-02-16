@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Pressable, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AppDispatch, RootState } from "../../store/store";
 import { pressButton } from "../../store/buttonSlice";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/navigation";
+
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ManageExpense"
+>;
 
 interface IconButtonProps {
   icon: keyof typeof Ionicons.glyphMap;
@@ -12,11 +21,24 @@ interface IconButtonProps {
 }
 
 const IconButton = ({ icon, size, color }: IconButtonProps) => {
-    const isPressed = useSelector((state:RootState) => state.button.isPressed )
+  const isPressed = useSelector((state: RootState) => state.button.isPressed);
   const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation<NavigationProp>();
+
+  const handlePressIcon = () => {
+    dispatch(pressButton(true));
+  };
+
+  useEffect(() => {
+    if (isPressed) {
+      navigation.navigate("ManageExpense");
+      dispatch(pressButton(false));
+    }
+  }, [isPressed, navigation, dispatch]);
+
   return (
     <Pressable
-      onPress={() => dispatch(pressButton(!isPressed))}
+      onPress={handlePressIcon}
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.buttonContainer}>

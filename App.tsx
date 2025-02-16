@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { RootState} from "./store/store";
+import { RootState } from "./store/store";
 import { StatusBar } from "expo-status-bar";
 import { RootStackParamList, RootTabParamList } from "./types/navigation";
 import { Ionicons } from "@expo/vector-icons";
@@ -68,9 +68,6 @@ const ExpensesOverview = () => {
 };
 
 export default function App() {
-  const isPressed = useSelector((state: RootState) => state.button.isPressed);
-  console.log(isPressed)
-
   return (
     <>
       <StatusBar style="light" />
@@ -83,12 +80,7 @@ export default function App() {
               headerShown: false,
             }}
           />
-          {isPressed && (
-            <Stack.Screen
-              name="ManageExpense"
-              component={ManageExpenseScreen}
-            />
-          )}
+          <Stack.Screen name="ManageExpense" component={ManageExpenseScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
