@@ -19,8 +19,10 @@ const ExpenseItem = ({ item }: ExpenseItemProps) => {
   const navigation = useNavigation<NavigationProp>();
 
   const handlePressExpense = () => {
-    navigation.navigate("ManageExpense");
+    navigation.navigate("ManageExpense", { expenseId: item.id });
   };
+
+  
 
   return (
     <Pressable

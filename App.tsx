@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import { RootState } from "./store/store";
+import { AppDispatch, RootState } from "./store/store";
 import { StatusBar } from "expo-status-bar";
 import { RootStackParamList, RootTabParamList } from "./types/navigation";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,11 +15,33 @@ import AllExpensesScreen from "./screens/AllExpensesScreen";
 import IconButton from "./components/UI/IconButton";
 
 import { GlobalStyles } from "./constanst/styles";
+import { pressed } from "./store/pressedSlice";
+import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ManageExpense"
+>;
+
 const ExpensesOverview = () => {
+   const isPressed = useSelector((state: RootState) => state.pressed.isPressed);
+   const dispatch = useDispatch<AppDispatch>();
+   const navigation = useNavigation<NavigationProp>();
+
+   const handlePressIcon = () => {
+     dispatch(pressed(true));
+   };
+
+   useEffect(() => {
+     if (isPressed) {
+       navigation.navigate("ManageExpense", {});
+       dispatch(pressed(false));
+     }
+   }, [isPressed, navigation, dispatch]);
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -31,7 +53,7 @@ const ExpensesOverview = () => {
         },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
         headerRight: ({ tintColor }) => (
-          <IconButton icon="add" size={24} color={tintColor} />
+          <IconButton icon="add" size={24} color={tintColor} onPress={handlePressIcon} />
         ),
       }}
     >
@@ -72,7 +94,13 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: "white",
+            headerTitleAlign: "center",
+          }}
+        >
           <Stack.Screen
             name="ExpensesOverview"
             component={ExpensesOverview}
@@ -80,7 +108,13 @@ export default function App() {
               headerShown: false,
             }}
           />
-          <Stack.Screen name="ManageExpense" component={ManageExpenseScreen} />
+          <Stack.Screen
+            name="ManageExpense"
+            component={ManageExpenseScreen}
+            options={{
+              presentation: "modal",
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
