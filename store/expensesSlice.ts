@@ -30,7 +30,7 @@ const initialState: ExpensesState = {
       id: "e4",
       description: "A book",
       amount: 12.59,
-      date: "2025-02-04",
+      date: "2025-02-14",
     },
     {
       id: "e5",
@@ -44,9 +44,33 @@ const initialState: ExpensesState = {
 const expensesSlice = createSlice({
   name: "expenses",
   initialState,
-  reducers: {},
+  reducers: {
+    deleteExpense: (state, action: PayloadAction<string>) => {
+      const newExpenses = state.expenses.filter(
+        (item) => item.id !== action.payload
+      );
+      state.expenses = newExpenses;
+    },
+    addExpense: (state, action: PayloadAction<Expense>) => {
+      state.expenses = [...state.expenses, action.payload];
+    },
+    updateExpense: (state, action: PayloadAction<Expense>) => {
+      const updateExpenses = state.expenses.map((item) =>
+        item.id === action.payload.id
+          ? {
+              ...item,
+              description: action.payload.description,
+              amount: action.payload.amount,
+              date: action.payload.date,
+            }
+          : item
+      );
+      state.expenses = updateExpenses;
+    },
+  },
 });
 
-export const {} = expensesSlice.actions;
+export const { deleteExpense, addExpense, updateExpense } =
+  expensesSlice.actions;
 
 export const expensesReducer = expensesSlice.reducer;

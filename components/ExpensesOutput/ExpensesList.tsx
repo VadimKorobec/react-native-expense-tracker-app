@@ -1,11 +1,13 @@
-import { FlatList, StyleSheet, Text } from "react-native";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { FlatList, StyleSheet } from "react-native";
+
 import ExpenseItem from "./ExpenseItem";
+import { Expense } from "../../types/expense";
 
-const ExpensesList = () => {
-  const expenses = useSelector((state: RootState) => state.expenses.expenses);
+interface ExpensesListProps {
+  expenses: Expense[];
+}
 
+const ExpensesList = ({ expenses }: ExpensesListProps) => {
   return (
     <FlatList
       data={expenses}
