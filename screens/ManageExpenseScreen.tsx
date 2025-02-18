@@ -15,6 +15,7 @@ import {
   deleteExpense,
   updateExpense,
 } from "../store/expensesSlice";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, "ManageExpense">;
 type ManageExpenseNavigationProp = NativeStackNavigationProp<
@@ -73,6 +74,7 @@ const ManageExpenseScreen = () => {
   
   return (
     <View style={styles.container}>
+      <ExpenseForm/>
       <View style={styles.buttons}>
         <Button style={styles.button} mode="flat" onPress={handleCancel}>
           Cancel

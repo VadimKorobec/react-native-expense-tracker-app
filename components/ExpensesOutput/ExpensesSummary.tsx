@@ -4,14 +4,18 @@ import { RootState } from "../../store/store";
 
 import { GlobalStyles } from "../../constanst/styles";
 
-const ExpensesSummary = () => {
+interface ExpensesSummaryProps {
+  text: string;
+}
+
+const ExpensesSummary = ({ text }: ExpensesSummaryProps) => {
   const expenses = useSelector((state: RootState) => state.expenses.expenses);
 
   const summarySum = expenses.reduce((acc, item) => acc + item.amount, 0);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.period}>Last 7 days</Text>
+      <Text style={styles.period}>{text}</Text>
       <Text style={styles.sum}>{summarySum.toFixed(2)}</Text>
     </View>
   );

@@ -6,7 +6,13 @@ import { RootState } from "../store/store";
 
 const AllExpensesScreen = () => {
   const expenses = useSelector((state: RootState) => state.expenses.expenses);
-  return <ExpensesOutput expenses={expenses} />;
+  return (
+    <ExpensesOutput
+      expenses={expenses}
+      text="Total"
+      fallbackText="No registered expenses found!"
+    />
+  );
 };
 
 export default AllExpensesScreen;
