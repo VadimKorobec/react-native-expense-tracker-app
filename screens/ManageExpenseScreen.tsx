@@ -71,18 +71,13 @@ const ManageExpenseScreen = () => {
     }
     navigation.goBack();
   };
-  
+
   return (
     <View style={styles.container}>
-      <ExpenseForm/>
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={handleCancel}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={handleConfirm}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+        onCancel={handleCancel}
+      />
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -105,15 +100,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 8,
-  },
-  button: {
-    minWidth: 120,
-  },
+
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
