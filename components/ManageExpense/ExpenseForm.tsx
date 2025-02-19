@@ -2,26 +2,28 @@ import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { nanoid } from "@reduxjs/toolkit";
 
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { addExpense } from "../../store/expensesSlice";
-
 import Input from "./Input";
 import Button from "../UI/Button";
+import { Expense } from "../../types/expense";
 
 interface ExpenseFormProps {
   submitButtonLabel: string;
+  defaultValues: Expense;
+  onSubmit: (data: Expense) => void;
   onCancel: () => void;
 }
 
-const ExpenseForm = ({ onCancel, submitButtonLabel }: ExpenseFormProps) => {
+const ExpenseForm = ({
+  onCancel,
+  submitButtonLabel,
+  onSubmit,
+  defaultValues,
+}: ExpenseFormProps) => {
   const [inputValues, setInputValues] = useState({
-    description: "",
-    amount: "",
-    date: "",
+    description: defaultValues ? defaultValues.description : "",
+    amount: defaultValues ? defaultValues.amount.toString() : "",
+    date: defaultValues ? defaultValues.date : "",
   });
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleInputChange =
     (inputName: "description" | "amount" | "date") =>
@@ -39,15 +41,18 @@ const ExpenseForm = ({ onCancel, submitButtonLabel }: ExpenseFormProps) => {
       Alert.alert("Please enter a valid amount.");
       return;
     }
+    if (!inputValues.description || !inputValues.date) {
+      Alert.alert("Missing Information", "Please fill in all fields.");
+      return;
+    }
 
-    dispatch(
-      addExpense({
-        id: nanoid(),
-        amount,
-        description: inputValues.description,
-        date: inputValues.date,
-      })
-    );
+    onSubmit({
+      id: nanoid(),
+      amount,
+      description: inputValues.description,
+      date: inputValues.date,
+    });
+    onCancel();
   };
 
   return (
