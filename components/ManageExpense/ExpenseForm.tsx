@@ -41,7 +41,7 @@ const ExpenseForm = ({
       Alert.alert("Please enter a valid amount.");
       return;
     }
-    if (!inputValues.description || !inputValues.date) {
+    if (!inputValues.description.trim() || !inputValues.date) {
       Alert.alert("Missing Information", "Please fill in all fields.");
       return;
     }

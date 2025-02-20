@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Expense } from "../types/expense";
+import { addExpense, fetchExpenses } from "./operations";
 
 interface ExpensesState {
   expenses: Expense[];
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: ExpensesState = {
@@ -39,6 +42,8 @@ const initialState: ExpensesState = {
       date: "2025-02-15",
     },
   ],
+  isLoading: false,
+  error: null,
 };
 
 const expensesSlice = createSlice({
@@ -51,9 +56,7 @@ const expensesSlice = createSlice({
       );
       state.expenses = newExpenses;
     },
-    addExpense: (state, action: PayloadAction<Expense>) => {
-      state.expenses = [...state.expenses, action.payload];
-    },
+
     updateExpense: (state, action: PayloadAction<Expense>) => {
       const updateExpenses = state.expenses.map((item) =>
         item.id === action.payload.id
@@ -68,9 +71,29 @@ const expensesSlice = createSlice({
       state.expenses = updateExpenses;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchExpenses.pending, (state, action) => ({
+        ...state,
+        isLoading: true,
+        error: null,
+      }))
+      .addCase(fetchExpenses.fulfilled, (state, action:PayloadAction<Expense[]>) => ({
+        ...state,
+        isLoading: false,
+        expenses: action.payload,
+      }))
+      .addCase(fetchExpenses.rejected, (state, action) => {})
+      .addCase(addExpense.pending, (state, action) => {})
+      .addCase(
+        addExpense.fulfilled,
+        (state, action: PayloadAction<Expense>) => {
+          state.expenses = [...state.expenses, action.payload];
+        }
+      );
+  },
 });
 
-export const { deleteExpense, addExpense, updateExpense } =
-  expensesSlice.actions;
+export const { deleteExpense, updateExpense } = expensesSlice.actions;
 
 export const expensesReducer = expensesSlice.reducer;

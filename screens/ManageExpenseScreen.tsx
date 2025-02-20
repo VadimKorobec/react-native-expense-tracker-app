@@ -5,18 +5,14 @@ import { RootStackParamList } from "../types/navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import IconButton from "../components/UI/IconButton";
-import Button from "../components/UI/Button";
 
 import { GlobalStyles } from "../constanst/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import {
-  addExpense,
-  deleteExpense,
-  updateExpense,
-} from "../store/expensesSlice";
+import { deleteExpense, updateExpense } from "../store/expensesSlice";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { Expense } from "../types/expense";
+import { addExpense } from "../store/operations";
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, "ManageExpense">;
 type ManageExpenseNavigationProp = NativeStackNavigationProp<
@@ -27,13 +23,13 @@ type ManageExpenseNavigationProp = NativeStackNavigationProp<
 const ManageExpenseScreen = () => {
   const route = useRoute<ManageExpenseRouteProp>();
   const navigation = useNavigation<ManageExpenseNavigationProp>();
-  const expenses = useSelector((state:RootState) => state.expenses.expenses)
+  const expenses = useSelector((state: RootState) => state.expenses.expenses);
   const dispatch = useDispatch<AppDispatch>();
 
   const expenseId = route.params?.expenseId;
   const isEditing = !!expenseId;
 
-  const selectedExpenses = expenses.find(item => item.id === expenseId)!
+  const selectedExpenses = expenses.find((item) => item.id === expenseId)!;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -75,7 +71,7 @@ const ManageExpenseScreen = () => {
         submitButtonLabel={isEditing ? "Update" : "Add"}
         onCancel={handleCancel}
         onSubmit={handleConfirm}
-        defaultValues={selectedExpenses} 
+        defaultValues={selectedExpenses}
       />
       {isEditing && (
         <View style={styles.deleteContainer}>
