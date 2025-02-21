@@ -47,7 +47,7 @@ const ExpenseForm = ({
     }
 
     onSubmit({
-      id: nanoid(),
+     
       amount,
       description: inputValues.description,
       date: inputValues.date,

@@ -1,11 +1,22 @@
 import { StyleSheet } from "react-native";
 
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
+import { useEffect } from "react";
+import { fetchExpenses } from "../store/operations";
 
 const AllExpensesScreen = () => {
-  const expenses = useSelector((state: RootState) => state.expenses.expenses);
+  const { expenses, isLoading, error } = useSelector(
+    (state: RootState) => state.expenses
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchExpenses());
+  }, [dispatch]);
+
   return (
     <ExpensesOutput
       expenses={expenses}

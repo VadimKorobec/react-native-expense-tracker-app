@@ -10,7 +10,20 @@ export const fetchExpenses = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/expenses.json");
-      return response.data;
+      
+      const expensesArray:Expense[] = [];
+
+      for (const key in response.data) {
+        const expenseObj = {
+          id: key,
+          amount: response.data[key].amount,
+          date: response.data[key].date,
+          description:response.data[key].description
+        }
+        expensesArray.push(expenseObj)
+      }
+
+       return expensesArray;
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
